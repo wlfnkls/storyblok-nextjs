@@ -22,7 +22,7 @@ export interface Config {
 }
 
 export interface Grid {
-  columns?: (Article | Config | Grid | Hero | MenuLink | Page | PopularArticles | Teaser | Text)[];
+  columns?: (Article | Config | Grid | Hero | MenuLink | Page | PopularArticles | Teaser | Text | TextImage)[];
   component: "grid";
   _uid: string;
   _editable?: string | undefined;
@@ -50,7 +50,7 @@ export interface MenuLink {
 }
 
 export interface Page {
-  body?: (Grid | Hero | PopularArticles | Text)[];
+  body?: (Grid | Hero | PopularArticles | Text | TextImage)[];
   component: "page";
   _uid: string;
   _editable?: string | undefined;
@@ -81,6 +81,17 @@ export interface Text {
   headline?: string;
   text?: StoryblokRichTextDoc;
   component: "text";
+  _uid: string;
+  _editable?: string | undefined;
+  [k: string]: unknown;
+}
+
+export interface TextImage {
+  headline?: string;
+  subheadline?: string;
+  image?: StoryblokAsset;
+  text?: StoryblokRichTextDoc;
+  component: "text_image";
   _uid: string;
   _editable?: string | undefined;
   [k: string]: unknown;

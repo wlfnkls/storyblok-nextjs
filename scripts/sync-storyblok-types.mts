@@ -2,9 +2,12 @@
  * Pulls the component schemas from Storyblok, generates the TypeScript types
  * and moves them from .storyblok/ into types/, where the app imports them from.
  *
- * Run with `pnpm sb:sync`.
+ * The final step of `pnpm sb:schema:pull` and `pnpm sb:schema:push`, never run
+ * on its own. It pulls instead of reading storyblok/ because `types generate`
+ * only reads the pulled JSON, and that JSON is also the snapshot the drift
+ * check compares the space with (check-storyblok-schema-drift.mts). Run alone,
+ * it would move the snapshot without updating storyblok/ and hide UI changes.
  */
-import { spawnSync } from 'node:child_process';
 import {
   existsSync,
   mkdirSync,
@@ -14,6 +17,7 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { fail, requireLogin, run, step } from './lib/cli.mts';
 
 // CLI output: `path` and `modules.types.generate.filename` in storyblok.config.ts
 const GENERATED_DIR = '.storyblok/types';
@@ -29,19 +33,6 @@ const IMPORT = "from './storyblok/storyblok'";
 
 // Checks the two .d.ts files with lib checking on (tsconfig.json skips .d.ts files)
 const TYPES_TSCONFIG = 'tsconfig.storyblok-types.json';
-
-function fail(message: string): never {
-  console.error(`\n✖ ${message}`);
-  process.exit(1);
-}
-
-function step(message: string) {
-  console.log(`\n→ ${message}`);
-}
-
-function run(command: string, args: string[]) {
-  return spawnSync(command, args, { stdio: 'inherit' }).status === 0;
-}
 
 function findComponentTypes() {
   const spaces = readdirSync(GENERATED_DIR, { withFileTypes: true }).filter(
@@ -82,18 +73,15 @@ function moveTypes() {
   rmSync(GENERATED_DIR, { recursive: true });
 }
 
-step('Checking Storyblok login');
-if (!run('pnpm', ['--silent', 'sb:user'])) {
-  fail('Not logged in to Storyblok (or the API is unreachable). Run `pnpm sb:login` and try again.');
-}
+requireLogin();
 
 step('Pulling components');
-if (!run('pnpm', ['--silent', 'sb:pull-components'])) {
+if (!run('pnpm', ['exec', 'storyblok', 'components', 'pull'])) {
   fail('Pulling the components failed.');
 }
 
 step('Generating types');
-if (!run('pnpm', ['--silent', 'sb:generate-types'])) {
+if (!run('pnpm', ['exec', 'storyblok', 'types', 'generate'])) {
   fail('Generating the types failed.');
 }
 

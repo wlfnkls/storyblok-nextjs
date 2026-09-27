@@ -9,6 +9,7 @@ import PopularArticles from './bloks/popular-articles';
 import Hero from '@/components/bloks/hero';
 import Grid from '@/components/bloks/grid';
 import Text from '@/components/bloks/text';
+import TextImage from '@/components/bloks/text-image';
 import Fallback from '@/components/bloks/fallback';
 
 storyblokInit({
@@ -23,5 +24,6 @@ storyblokInit({
     hero: Hero,
     grid: Grid,
     text: Text,
+    text_image: TextImage,
   },
 });

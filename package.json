@@ -9,9 +9,9 @@
     "lint": "eslint",
     "sb:login": "storyblok login",
     "sb:user": "storyblok user",
-    "sb:pull-components": "storyblok components pull",
-    "sb:generate-types": "storyblok types generate",
-    "sb:sync": "node scripts/sync-storyblok-types.mts"
+    "sb:schema:pull": "node scripts/pull-storyblok-schema.mts && node scripts/sync-storyblok-types.mts",
+    "sb:schema:diff": "node scripts/check-storyblok-schema-drift.mts && storyblok schema push storyblok/schema.ts --dry-run",
+    "sb:schema:push": "node scripts/check-storyblok-schema-drift.mts && storyblok schema push storyblok/schema.ts --no-write-components && node scripts/sync-storyblok-types.mts"
   },
   "dependencies": {
     "@storyblok/api-client": "^0.7.4",
@@ -24,6 +24,7 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@storyblok/schema": "0.4.3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
