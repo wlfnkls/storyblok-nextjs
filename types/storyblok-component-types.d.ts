@@ -22,6 +22,7 @@ export interface Config {
 }
 
 export interface Grid {
+  headline?: string;
   columns?: (Article | Config | Grid | Hero | MenuLink | Page | PopularArticles | Teaser | Text | TextImage)[];
   component: "grid";
   _uid: string;

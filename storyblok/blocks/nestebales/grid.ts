@@ -8,6 +8,9 @@ export const gridBlock = defineBlock({
   is_nestable: true,
   folder: nestebalesFolder,
   fields: [
+    defineField('headline', {
+      type: 'text',
+    }),
     defineField('columns', {
       type: 'bloks',
     }),

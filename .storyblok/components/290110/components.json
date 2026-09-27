@@ -87,12 +87,17 @@
     "display_name": "",
     "description": "",
     "created_at": "2024-05-24T13:47:36.048Z",
-    "updated_at": "2026-09-27T14:23:57.181Z",
+    "updated_at": "2026-09-27T15:07:08.727Z",
     "id": 5840139,
     "schema": {
+      "headline": {
+        "type": "text",
+        "pos": 0,
+        "id": "7fegTbGCROevn45q7vAxcg"
+      },
       "columns": {
         "type": "bloks",
-        "pos": 0,
+        "pos": 1,
         "id": "MEmWXOT4QdmLdKZi2ibWHg"
       }
     },

@@ -104,7 +104,7 @@ Credits go in a `figcaption` below the image (`mt-3 font-code text-xs text-foreg
 
 - At most 3 per row: `sm:grid-cols-2 lg:grid-cols-3`. A single item gets `max-w-xl`, and two items get `sm:grid-cols-2`, so there's never a half-empty row of three.
 - The parent section owns the container and spacing. Cards only render themselves and fill their cell (`flex` on the `li`, `w-full` on the card, `flex-1` on the content). The "Read more" cue is pinned with `mt-auto`, so cues line up across a row.
-- Editors build rows of arbitrary bloks with the Storyblok `grid` blok (`components/bloks/grid.tsx`).
+- Editors build rows of arbitrary bloks with the Storyblok `grid` blok (`components/bloks/grid.tsx`). Its optional headline is a section `h2` (`mb-8`) that labels the section; the grid then passes `headingLevel='h3'` to its children, so teaser cards drop to `h3`.
 
 **Teaser card.** `components/bloks/teaser/teaser-card.tsx` is the one card for anything that points to content. It takes plain props (headline, description, image, resolved link, `headingLevel`, `highlighted`, `editable`). Bloks only map their data onto it: `teaser.tsx` from its own fields, `popular-articles.tsx` from article stories. Don't build a second card for another content type; map onto this one.
 
