@@ -19,17 +19,13 @@ export default function Text({ blok }: StoryblokComponentProps<Text>) {
       {blok.headline && (
         <h2
           id={headingId}
-          className='mb-6 max-w-2xl text-2xl font-semibold tracking-tight wrap-break-word hyphens-auto text-balance sm:text-3xl'
+          className='mb-6 text-2xl font-semibold tracking-tight wrap-break-word hyphens-auto text-balance sm:text-3xl'
         >
           {blok.headline}
         </h2>
       )}
       {text && (
-        <RichText
-          document={text}
-          minHeadingLevel={blok.headline ? 3 : 2}
-          className='max-w-2xl'
-        />
+        <RichText document={text} minHeadingLevel={blok.headline ? 3 : 2} />
       )}
     </section>
   );

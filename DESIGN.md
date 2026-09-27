@@ -125,9 +125,9 @@ Credits go in a `figcaption` below the image (`mt-3 font-code text-xs text-foreg
 - Check fields with `hasRichText()` first: an emptied field still sends an empty paragraph.
 - No `@tailwindcss/typography`: add new elements to `PROSE` instead.
 
-**Text.** `components/bloks/text.tsx`: an optional section `h2` (`mb-6`) and rich text. It sits in the regular container, left-aligned with the hero, but both headline and text stop at `max-w-2xl` for line length. Labelled by its heading (`aria-labelledby`), and renders nothing when both fields are empty.
+**Text.** `components/bloks/text.tsx`: an optional section `h2` (`mb-6`) and rich text. It sits in the regular container, left-aligned with the hero, and uses its full width. Labelled by its heading (`aria-labelledby`), and renders nothing when both fields are empty.
 
-**Text & image.** `components/bloks/text-image.tsx`: text and image side by side in the regular container (`md:grid-cols-2 md:items-center`), stacked on mobile with the text first. `text-image/text-image-content.tsx` holds the optional section `h2`, the subheadline (`text-lg/relaxed text-foreground/70`) and the rich text (headings from `h3` below a headline). `text-image/text-image-figure.tsx` is the image frame at `aspect-4/3`, lazy, with the credit in a `figcaption`. Labelled by its heading, and renders nothing when every field is empty.
+**Text & image.** `components/bloks/text-image.tsx`: text and image side by side in the regular container (`md:grid-cols-2 md:items-center`), stacked on mobile with the text first. Without an image the grid stays one column, so the text uses the full container width. `text-image/text-image-content.tsx` holds the optional section `h2`, the subheadline (`text-lg/relaxed text-foreground/70`) and the rich text (headings from `h3` below a headline). `text-image/text-image-figure.tsx` is the image frame at `aspect-4/3`, lazy, with the credit in a `figcaption`. Labelled by its heading, and renders nothing when every field is empty.
 
 **Section with heading and cards.** Popular articles (`components/bloks/popular-articles.tsx`): a section `h2` (`mb-8`), then a card row. The section is labelled by its heading (`aria-labelledby`), and the cards drop to `h3` so headings don't skip levels.
 
