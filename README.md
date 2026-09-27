@@ -210,7 +210,7 @@ Once per machine, run `pnpm sb:login` (check it with `pnpm sb:user`).
 - **Changing** works the same way as adding: edit the file and push (Way 1), or edit in the UI and pull (Way 2).
 - **Renaming or removing a field** breaks existing content. `sb:schema:push` detects it, lists the breaking changes and offers to scaffold a migration. Review the migration, then run it with `pnpm exec storyblok migrations run`.
 - **Removing a blok:** a push never deletes bloks on its own, so leaving one out of `schema.ts` isn't enough. Delete it in the UI and pull. Or remove it from `storyblok/`, commit, run `pnpm exec storyblok schema push storyblok/schema.ts --delete` (check it with `--dry-run` first), then `pnpm sb:schema:pull` to refresh the snapshot and types (`storyblok/` stays as it is).
-- **Undo a push:** `pnpm exec storyblok schema rollback --latest`, then `pnpm sb:schema:pull`.
+- **Undo a push:** restore only the schema code from before the change (`git checkout <commit>~1 -- storyblok/`), commit it, and run `pnpm sb:schema:push`. This works on any machine. Don't `git revert` the whole commit: that would also revert the snapshot in `.storyblok/components/`, and the drift check would refuse the push. On the machine that did the push, `pnpm exec storyblok schema rollback --latest` followed by `pnpm sb:schema:pull` also works: every push saves the space's previous state as a changeset in `.storyblok/schema/changesets/`. Those files are git-ignored, because they're local undo records and git history already has the schema.
 
 ### Which script when
 

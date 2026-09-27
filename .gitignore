@@ -47,3 +47,4 @@ certificates
 .storyblok/logs/
 .storyblok/types/
 .storyblok/reports/
+.storyblok/schema/changesets/
