@@ -2,6 +2,8 @@
 
 A personal blog built with Next.js and the Storyblok headless CMS: minimal, fast, and fully editable in Storyblok's Visual Editor.
 
+You find a live-preview here: [Follow the white rabbit](https://storyblok-nextjs-six.vercel.app/)
+
 ## Tech stack
 
 - **[Next.js 16](https://nextjs.org)**: App Router, React Server Components, static generation, `proxy.ts`
