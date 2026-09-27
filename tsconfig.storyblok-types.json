@@ -1,0 +1,14 @@
+{
+  // Checks the generated Storyblok types on their own, with lib checking on:
+  // tsconfig.json skips .d.ts files, so a broken import there would silently become `any`
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": false,
+    "incremental": false,
+    "plugins": []
+  },
+  "include": [
+    "types/storyblok-component-types.d.ts",
+    "types/storyblok/storyblok.d.ts"
+  ]
+}
