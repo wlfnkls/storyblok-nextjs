@@ -17,7 +17,7 @@ You find a live-preview here: [Follow the white rabbit](https://storyblok-nextjs
 ## Features
 
 - **One route for all content.** `app/[[...slug]]` renders every Storyblok story. All published stories are pre-rendered at build time (`generateStaticParams`).
-- **Caching with on-demand revalidation.** Published content is cached with tags. A signed Storyblok webhook (`/api/revalidate`) refreshes it on publish, with a daily revalidation as a fallback.
+- **Caching with on-demand revalidation.** Published content is cached with tags. A Storyblok webhook (`/api/revalidate`), verified by signature or secret token, refreshes it on publish, with a daily revalidation as a fallback.
 - **Visual Editor preview.** Next.js Draft Mode, entered via signed, time-limited preview links (`/api/draft`). Drafts are never cached. Outside the editor, a banner lets you leave draft mode.
 - **Schema as code, UI welcome.** Bloks live in TypeScript (`storyblok/`) and are pushed to Storyblok (`pnpm sb:schema:push`). Bloks built in the Storyblok UI are pulled back into code (`pnpm sb:schema:pull`), and a push refuses to overwrite UI changes that haven't been pulled yet.
 - **Typed CMS content.** TypeScript types are generated from the Storyblok schema and verified against the code, as the last step of `pnpm sb:schema:pull` and `pnpm sb:schema:push`.
@@ -52,7 +52,7 @@ All variables are required. `.env.example` explains where to find each one.
 | `STORYBLOK_PUBLIC_TOKEN`   | Storyblok → Settings → Access Tokens, access level **Public**                      |
 | `STORYBLOK_PREVIEW_TOKEN`  | Storyblok → Settings → Access Tokens, access level **Preview**                     |
 | `STORYBLOK_SPACE_ID`       | Storyblok → Settings → General. Used by the app and the Storyblok CLI              |
-| `STORYBLOK_WEBHOOK_SECRET` | Any long random string (e.g. `openssl rand -hex 32`), also entered in the webhook  |
+| `STORYBLOK_WEBHOOK_SECRET` | Any long random string (e.g. `openssl rand -hex 32`), used by the webhook, see [Webhook](#webhook-cache-revalidation) |
 
 `.env` is git-ignored. Never commit real values.
 
@@ -119,13 +119,17 @@ Storyblok appends the story's slug and its signed `_storyblok_tk` parameters. Th
 
 ### Webhook (cache revalidation)
 
-Storyblok → Settings → Webhooks → new webhook:
+Storyblok → Settings → Webhooks → new webhook. Webhook secrets are only available in Storyblok's paid plans, so the route accepts two ways of proving the request comes from Storyblok. Both use `STORYBLOK_WEBHOOK_SECRET`:
 
-- **Endpoint:** `https://<your-domain>/api/revalidate`
-- **Secret:** the value of `STORYBLOK_WEBHOOK_SECRET`
+| | Paid plans (signed) | Free plan (secret in the URL) |
+| --- | --- | --- |
+| **Endpoint** | `https://<your-domain>/api/revalidate` | `https://<your-domain>/api/revalidate?secret=<STORYBLOK_WEBHOOK_SECRET>` |
+| **Webhook secret** | the value of `STORYBLOK_WEBHOOK_SECRET` | not available, leave empty |
+| **Verified by** | the `webhook-signature` header (HMAC-SHA1 of the body) | the `secret` query parameter |
+
 - **Triggers:** story published, unpublished, deleted (and moved, if you use it)
 
-Requests without a valid signature are rejected.
+Requests without a valid signature or secret token are rejected with `401`. On the free plan, treat the endpoint URL like a password: it contains the secret. To rotate it, change the environment variable and the webhook URL together.
 
 ## Adding a blok
 
@@ -238,7 +242,7 @@ The app runs on any host that supports Next.js (e.g. Vercel).
 
 1. Set all four environment variables on the host.
 2. Build with `pnpm build`. The build fetches content from Storyblok, so the tokens must be available at build time.
-3. Point the Storyblok webhook and a Visual Editor location at the production URL.
+3. Point the Storyblok webhook (with `?secret=` on the free plan) and a Visual Editor location at the production URL.
 
 ## Caveats
 
