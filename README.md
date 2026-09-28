@@ -16,7 +16,7 @@ You find a live-preview here: [Follow the white rabbit](https://storyblok-nextjs
 
 ## Features
 
-- **One route for all content.** `app/[[...slug]]` renders every Storyblok story. All published stories are pre-rendered at build time (`generateStaticParams`).
+- **One route for all content.** `app/[...slug]` renders every Storyblok story, `app/page.tsx` the `home` story at `/`. All published stories are pre-rendered at build time (`generateStaticParams`).
 - **Caching with on-demand revalidation.** Published content is cached with tags. A Storyblok webhook (`/api/revalidate`), verified by signature or secret token, refreshes it on publish, with a daily revalidation as a fallback.
 - **Visual Editor preview.** Next.js Draft Mode, entered via signed, time-limited preview links (`/api/draft`). Drafts are never cached. Outside the editor, a banner lets you leave draft mode.
 - **Schema as code, UI welcome.** Bloks live in TypeScript (`storyblok/`) and are pushed to Storyblok (`pnpm sb:schema:push`). Bloks built in the Storyblok UI are pulled back into code (`pnpm sb:schema:pull`), and a push refuses to overwrite UI changes that haven't been pulled yet.
@@ -76,7 +76,8 @@ Bloks can be added in code or in the Storyblok UI. [Adding a blok](#adding-a-blo
 
 ```
 app/
-  [[...slug]]/page.tsx     Catch-all route: fetches and renders any story
+  page.tsx                 Home route: renders the `home` story at /
+  [...slug]/page.tsx       Catch-all route: renders every other story
   api/draft/               Enters draft mode from a signed Visual Editor link
   api/draft/disable/       Leaves draft mode
   api/revalidate/          Storyblok webhook → cache revalidation
@@ -87,6 +88,7 @@ components/
   header/                  Navigation, theme toggle, skip link
   ui/                      Shared UI (card grid, cover image, rich text)
   registry.ts              Maps Storyblok component names to React components
+  story-page.tsx           Fetches a story and renders it as the page's main content
 lib/
   storyblok/               API clients, fetching, links, images, rich text helpers
   fonts.ts
