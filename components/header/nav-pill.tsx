@@ -12,6 +12,8 @@ export type NavItem = {
 
 // '/' only matches itself; other routes also match their sub-pages
 function isActivePath(pathname: string, href: string) {
+  console.log('pathname', pathname);
+  console.log('href', href);
   const path = href.split('#')[0] || '/';
   if (path === '/') return pathname === '/';
   return pathname === path || pathname.startsWith(`${path}/`);
