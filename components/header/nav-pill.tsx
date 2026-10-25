@@ -24,6 +24,8 @@ export default function NavPill({ item }: { item: NavItem }) {
   console.log('pathname', pathname);
   console.log('item.href', item.href);
   console.log('item.label', item.label);
+  console.log('isActive', isActive);
+  console.log('item.external', item.external);
 
   const className = `flex min-h-11 items-center rounded-full px-4 font-fine text-sm font-medium whitespace-nowrap transition-[color,background-color,box-shadow] duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-accent-deep dark:focus-visible:ring-accent motion-reduce:transition-none ${
     isActive
